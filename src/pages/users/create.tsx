@@ -19,7 +19,7 @@ const createUserFormSchema = yup.object().shape({
     name: yup.string().required('Name required'),
     email: yup.string().required('E-mail required').email('E-mail invalid'),
     password: yup.string().required('Password required').min(6, 'Minimun 6 characters'),
-    password_confirmation: yup.string().oneOf([
+    password_confirmation: yup.string().required('Password required').oneOf([
         null, yup.ref('password')
     ], 'The passwords needs to match')
 })
