@@ -6,30 +6,10 @@ import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 import Link from 'next/link'
 
-import { useQuery } from 'react-query'
-import { api } from "../../services/api";
+import { useUsers } from "../../services/hooks/useUsers";
 
 export default function UserList() {
-    const { data, isLoading, isFetching, error } = useQuery('users', async () => {
-        const { data } = await api.get('users')
-
-        const users = data.users.map(user => {
-            return {
-                id: user.id,
-                name: user.name,
-                email: user.email,
-                createdAt: new Date(user.createdAt).toLocaleDateString('en-GB', {
-                    day: '2-digit',
-                    month: 'long',
-                    year: 'numeric'
-                })
-            }
-        })
-
-        return users
-    }, {
-        staleTime: 1000 * 5
-    })
+    const { data, isLoading, isFetching, error } = useUsers()
 
     const isWideVersion = useBreakpointValue({
         base: false,
