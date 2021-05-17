@@ -54,6 +54,8 @@ export function makeServer() {
                 )
             })
 
+            this.get('/users/:id')
+
             this.post('/users')
 
             // reset the global namespace
