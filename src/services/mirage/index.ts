@@ -64,7 +64,7 @@ export function makeServer() {
 
             // reset the global namespace
             this.namespace = ''
-            this.passthrough()
+            this.passthrough("http://localhost:3333/**")
         }
     })
 
