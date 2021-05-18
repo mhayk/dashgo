@@ -65,6 +65,7 @@ export function makeServer() {
             // reset the global namespace
             this.namespace = ''
             this.passthrough("http://localhost:3333/**")
+            this.passthrough('/_next/static/development/_devPagesManifest.json')
         }
     })
 
