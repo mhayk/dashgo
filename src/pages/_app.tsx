@@ -7,6 +7,7 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 
 import { QueryClientProvider } from 'react-query'
 import { queryClient } from '../services/queryClient'
+import { AuthProvider } from '../Contexts/AuthContext'
 
 if (process.env.NODE_ENV === "development") {
   makeServer()
@@ -14,15 +15,17 @@ if (process.env.NODE_ENV === "development") {
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ChakraProvider theme={theme}>
-        <SidebarDrawerProvider>
-          <Component {...pageProps} />
-        </SidebarDrawerProvider>
-      </ChakraProvider>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <ChakraProvider theme={theme}>
+          <SidebarDrawerProvider>
+            <Component {...pageProps} />
+          </SidebarDrawerProvider>
+        </ChakraProvider>
 
-      <ReactQueryDevtools />
-    </QueryClientProvider>
+        <ReactQueryDevtools />
+      </QueryClientProvider>
+    </AuthProvider>
   )
 }
 
