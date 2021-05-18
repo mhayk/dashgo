@@ -2,8 +2,9 @@ import { Box, Flex, SimpleGrid, Text, theme } from "@chakra-ui/react";
 import dynamic from 'next/dynamic';
 import { SideBar } from "../components/Sidebar";
 import { Header } from "../components/Header";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../Contexts/AuthContext";
+import { api } from "../services/api";
 
 const Chart = dynamic(() => import('react-apexcharts'), {
     // SSR is disabled.
@@ -12,6 +13,12 @@ const Chart = dynamic(() => import('react-apexcharts'), {
 
 export default function Dashboard() {
     const { user } = useContext(AuthContext)
+
+    useEffect(() => {
+        api.get('/me', {
+            baseURL: 'http://localhost:3333'
+        }).then(response => console.log(response))
+    })
     console.log(user)
     const options = {
         chart: {
