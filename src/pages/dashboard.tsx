@@ -17,7 +17,8 @@ export default function Dashboard() {
     useEffect(() => {
         api.get('/me', {
             baseURL: 'http://localhost:3333'
-        }).then(response => console.log(response))
+        })
+            .then(response => console.log(response))
     })
     console.log(user)
     const options = {
