@@ -8,7 +8,8 @@ import NextLink from 'next/link'
 
 import { useUsers } from "../../services/hooks/useUsers";
 import { queryClient } from "../../services/queryClient";
-import { api } from "../../services/api";
+import { Can } from "../../components/Can";
+import { api } from "../../services/apiClient";
 
 export default function UserList() {
     const [page, setPage] = useState(1);
@@ -43,20 +44,21 @@ export default function UserList() {
 
                             {!isLoading && isFetching && <Spinner size="sm" color="gray.500" ml="4" />}
                         </Heading>
-
-                        <NextLink href="/users/create" passHref>
-                            <Button
-                                as="a"
-                                size="sm"
-                                fontSize="sm"
-                                colorScheme="pink"
-                                leftIcon={<Icon as={RiAddLine}
-                                    fontSize="20"
-                                />}
-                            >
-                                Create a new user
+                        <Can permissions={['users.create']}>
+                            <NextLink href="/users/create" passHref>
+                                <Button
+                                    as="a"
+                                    size="sm"
+                                    fontSize="sm"
+                                    colorScheme="pink"
+                                    leftIcon={<Icon as={RiAddLine}
+                                        fontSize="20"
+                                    />}
+                                >
+                                    Create a new user
                             </Button>
-                        </NextLink>
+                            </NextLink>
+                        </Can>
                     </Flex>
 
                     {isLoading ? (
