@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { setCookie, parseCookies, destroyCookie } from 'nookies'
-import { api } from "../services/api";
+import { api } from "../services/apiClient";
 import Router from 'next/router'
 
 type User = {
@@ -28,7 +28,7 @@ export const AuthContext = createContext({} as AuthContextData)
 
 export function signOut() {
     destroyCookie(undefined, 'nextauth.token')
-    destroyCookie(undefined, 'nextauth.refreshtoken')
+    destroyCookie(undefined, 'nextauth.refreshToken')
 
     Router.push('/')
 }
@@ -77,7 +77,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 maxAge: 60 * 60 * 24 * 30, // 30 days
                 path: '/' // global
             })
-            setCookie(undefined, 'nextauth.refreshtoken', refreshToken, {
+            setCookie(undefined, 'nextauth.refreshToken', refreshToken, {
                 maxAge: 60 * 60 * 24 * 30, // 30 days
                 path: '/' // global
             })

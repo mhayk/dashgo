@@ -4,7 +4,9 @@ import { SideBar } from "../components/Sidebar";
 import { Header } from "../components/Header";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "../Contexts/AuthContext";
-import { api } from "../services/api";
+import { api } from "../services/apiClient";
+import { withSSRAuth } from "../utils/withSSRAuth";
+import { setupAPIClient } from "../services/api";
 
 const Chart = dynamic(() => import('react-apexcharts'), {
     // SSR is disabled.
@@ -20,7 +22,7 @@ export default function Dashboard() {
         })
             .then(response => console.log(response))
             .catch(err => console.log(err))
-    })
+    }, [])
 
     const options = {
         chart: {
@@ -109,3 +111,17 @@ export default function Dashboard() {
         </Flex>
     )
 }
+
+export const getServerSideProps = withSSRAuth(async (ctx) => {
+    const apiClient = setupAPIClient(ctx)
+
+    const response = await apiClient.get('/me', {
+        baseURL: 'http://localhost:3333'
+    })
+
+    console.log(response.data)
+
+    return {
+        props: {}
+    }
+})
