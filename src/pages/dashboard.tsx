@@ -7,6 +7,7 @@ import { AuthContext } from "../Contexts/AuthContext";
 import { api } from "../services/apiClient";
 import { withSSRAuth } from "../utils/withSSRAuth";
 import { setupAPIClient } from "../services/api";
+import { useCan } from "../hooks/useCan";
 
 const Chart = dynamic(() => import('react-apexcharts'), {
     // SSR is disabled.
@@ -15,6 +16,10 @@ const Chart = dynamic(() => import('react-apexcharts'), {
 
 export default function Dashboard() {
     const { user } = useContext(AuthContext)
+
+    const userCanSeeMetrics = useCan({
+        permissions: ['metrics.list']
+    })
 
     useEffect(() => {
         api.get('/me', {
@@ -85,26 +90,28 @@ export default function Dashboard() {
             <Flex w="100%" my="6" maxWidth={1480} mx="auto" px="6">
                 <SideBar />
 
-                <SimpleGrid flex="1" gap="4" minChildWidth="320px" align="flex-start">
-                    <Box
-                        p={["6", "8"]}
-                        bg="gray.800"
-                        borderRadius={8}
-                        pb="4"
-                    >
-                        <Text fontSize="lg" mb="4">Subscribers of the week</Text>
-                        <Chart options={options} series={series} type="area" height={160} />
-                    </Box>
-                    <Box
-                        p={["6", "8"]}
-                        bg="gray.800"
-                        borderRadius={8}
-                        pb="4"
-                    >
-                        <Text fontSize="lg" mb="4">Opening rate</Text>
-                        <Chart options={options} series={series} type="area" height={160} />
-                    </Box>
-                </SimpleGrid>
+                {userCanSeeMetrics &&
+                    <SimpleGrid flex="1" gap="4" minChildWidth="320px" align="flex-start">
+                        <Box
+                            p={["6", "8"]}
+                            bg="gray.800"
+                            borderRadius={8}
+                            pb="4"
+                        >
+                            <Text fontSize="lg" mb="4">Subscribers of the week</Text>
+                            <Chart options={options} series={series} type="area" height={160} />
+                        </Box>
+                        <Box
+                            p={["6", "8"]}
+                            bg="gray.800"
+                            borderRadius={8}
+                            pb="4"
+                        >
+                            <Text fontSize="lg" mb="4">Opening rate</Text>
+                            <Chart options={options} series={series} type="area" height={160} />
+                        </Box>
+                    </SimpleGrid>
+                }
             </Flex>
 
 
